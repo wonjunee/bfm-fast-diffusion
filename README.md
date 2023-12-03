@@ -15,7 +15,22 @@ The official code website: https://wasserstein-gradient-flows.netlify.app
 
 
 
-## You need to install PyBind package
+## Installation
+
+**Required:** Pybind11 package.
+
+Run the following line to install pybind11.
+
+Anaconda:
 ```
 conda install -c conda-forge pybind11
 ```
+
+Pip:
+```
+pip install pybind11
+```
+
+## Example
+
+Use BFM-fast-diffusion.py.
