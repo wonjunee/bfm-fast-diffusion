@@ -47,7 +47,7 @@ def solve_poisson(u, f, kernel,theta1,theta2):
 # %%
 
 
-def iterate_forward(bfmgf, flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2):
+def iterate_forward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2):
     flt2d.find_c_concave(psi, phi, tau)
     flt2d.find_c_concave(phi, psi, tau)
 
@@ -67,7 +67,7 @@ def iterate_forward(bfmgf, flt2d, method, push, psi, phi, mu, DUstar, V, kernel,
     
     
 
-def iterate_backward(bfmgf, flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2):
+def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2):
     flt2d.find_c_concave(psi, phi, tau)
     
     # bfmgf.calculate_DUstar(DUstar, V, phi, n, n, tau)
@@ -125,8 +125,8 @@ for jj in range(20): # total number of outer iterations rho^0, rho^1, ..., rho^{
     for i in range(1000): # you may need samller numbero fiteration than this. 
         theta1 = sigma
         theta2 = sigma/(tau*np.max(mu))
-        error_for = iterate_forward( bfmgf, flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2)
-        error_bac = iterate_backward(bfmgf, flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2)
+        error_for = iterate_forward (flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2)
+        error_bac = iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2)
 
         error1 = np.abs((error_for-error_for_prev)/error_for_prev)
         error2 = np.abs((error_bac-error_bac_prev)/error_bac_prev)
