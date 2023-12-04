@@ -88,7 +88,8 @@ def BFM(tau, Nt, n, rho0, V, sigma_coeff=20, maxiter=1000, tol=1e-2):
 
     mu = rho0.copy()
 
-    rho_traj = np.zeros((Nt-1, n, n)).astype('float64')
+    rho_traj = np.zeros((Nt, n, n)).astype('float64')
+    phi_traj = np.zeros((Nt, n, n)).astype('float64')
 
     method = bfmgf.BFM(n, n, tau)
     flt2d = bfmgf.FLT2D(n, n)
@@ -99,7 +100,7 @@ def BFM(tau, Nt, n, rho0, V, sigma_coeff=20, maxiter=1000, tol=1e-2):
     psi = np.zeros((n, n)).astype('float64')
     push = np.zeros((n, n)).astype('float64')
 
-    for t in range(Nt-1):  # total number of outer iterations rho^0, rho^1, ..., rho^{jj}
+    for t in range(Nt):  # total number of outer iterations rho^0, rho^1, ..., rho^{jj}
         error_for_prev = 1
         error_bac_prev = 1
         for i in range(maxiter):  # you may need samller numbero fiteration than this.
@@ -121,10 +122,10 @@ def BFM(tau, Nt, n, rho0, V, sigma_coeff=20, maxiter=1000, tol=1e-2):
             error_bac_prev = error_bac
         DUstar = np.exp(-phi - V)
         DUstar /= DUstar.mean()
+        #### Wuzhe: is this step really needed? If so, the mapping from rho to phi can be different each time step, right?
         mu = DUstar
 
         rho_traj[t, ...] = mu.copy()
+        phi_traj[t, ...] = phi.copy()
 
-    rho_traj = np.concatenate([rho0[None, ...], rho_traj], axis=0)
-
-    return rho_traj
+    return rho_traj, phi_traj

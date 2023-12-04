@@ -47,7 +47,7 @@ if __name__ == "__main__":
     grf_rho = GRF.sample(Ns)
 
     for i in range(Ns):
-        tmp_rho = grf_rho[i, ...]
+        tmp_rho = (torch.nn.functional.softplus(grf_rho[i, ...], 1)).numpy()
         tmp_rho = interp_2d(points_x, tmp_rho, points_xn, lx)
 
         rho0_mat[i, ...] = tmp_rho/tmp_rho.mean()
@@ -57,15 +57,19 @@ if __name__ == "__main__":
 
     ### run BFM ####
     rho_evo_mat = np.zeros((Ns, Nt, Nx, Nx))
+    phi_evo_mat = np.zeros((Ns, Nt, Nx, Nx))
 
     for i in range(Ns):
-        tmp_traj = BFM(dt, Nt, Nx, rho0_mat[i, ...], V)
-        rho_evo_mat[i, ...] = tmp_traj
+        tmp_rho_traj, tmp_phi_traj = BFM(dt, Nt, Nx, rho0_mat[i, ...], V)
+        rho_evo_mat[i, ...] = tmp_rho_traj
+        phi_evo_mat[i, ...] = tmp_phi_traj
 
     ### save file
     npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_'+num2str_deciaml(Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_'+num2str_deciaml(tau) + '.npy'
     with open(npy_name, 'wb') as ss:
+        np.save(ss, rho0_mat)
         np.save(ss, rho_evo_mat)
+        np.save(ss, phi_evo_mat)
 
 
 
