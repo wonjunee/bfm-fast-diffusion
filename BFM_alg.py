@@ -76,15 +76,14 @@ def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, ta
 ##################################################################################
 
 ### main algorithm starts here ######################################
-def BFM(tau, Nt, n, rho0, V, sigma_coeff=20, maxiter=1000, tol=1e-2):
+def BFM(tau, Nt, n, rho0, V, maxiter=1000, tol=1e-3):
     #########
     # outer loop: tau, Nt, time T = Nt*tau
     # inner loop: sigma: lr; maxiter and tol
     # rho is IC
     # V is potential
     ###########
-
-    sigma = tau*sigma_coeff
+    sigma = tau/10
 
     mu = rho0.copy()
 

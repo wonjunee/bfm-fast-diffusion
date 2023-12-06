@@ -3,6 +3,7 @@ from GRF import *
 from utils import *
 from BFM_alg import BFM
 from scipy.interpolate import CubicSpline
+from Potential import Potential
 import argparse
 
 parser = argparse.ArgumentParser(description='data generation for 2D kinetic')
@@ -46,14 +47,19 @@ if __name__ == "__main__":
 
     grf_rho = GRF.sample(Ns)
 
+    P = Potential(xxn, yyn)
+
     for i in range(Ns):
         tmp_rho = (torch.nn.functional.softplus(grf_rho[i, ...], 1)).numpy()
         tmp_rho = interp_2d(points_x, tmp_rho, points_xn, lx)
 
         rho0_mat[i, ...] = tmp_rho/tmp_rho.mean()
 
-    if potential_name == 'gaussian':
-        V = ((xxn-0.5)**2 + (yyn-0.5)**2)/2.0 * 0.1
+    if potential_name == 'double_wells':
+        V = P.double_well(0.25, 0.25, 0.75, 0.75, 100, 0.01)
+    elif potential_name == 'gaussian':
+        V = P.gaussian(0.5, 0.5, 0.01)
+
 
     ### run BFM ####
     rho_evo_mat = np.zeros((Ns, Nt, Nx, Nx))

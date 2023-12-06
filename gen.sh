@@ -12,6 +12,4 @@ module load fftw/3.3.8
 
 conda activate tg3
 
- 
-
-python data_generation.py -p gaussian -ns 2 -nx 64 -nt 10 -dt 0.001 -alp 3.5 -tau 10
+python data_generation.py -p gaussian -ns 2 -nx 64 -nt 10 -dt 0.0005 -alp 4 -tau 10

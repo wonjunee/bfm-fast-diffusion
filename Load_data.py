@@ -5,8 +5,8 @@ from utils import *
 Ns = 2
 Nx = 64
 
-Nt = 4
-dt = 0.001
+Nt = 10
+dt = 0.0005
 
 alpha = 4.0
 tau = 10
@@ -36,7 +36,7 @@ ax[0].set_aspect('equal')
 ax[0].set_title(r'$\rho$')
 plt.colorbar(cp)
 
-cp = ax[1].contourf(xx,yy,rho_mat[0, 2, ...],10)
+cp = ax[1].contourf(xx,yy,rho_mat[0, 1, ...],10)
 ax[1].set_aspect('equal')
 ax[1].set_title(r'$\rho$')
 plt.colorbar(cp)
