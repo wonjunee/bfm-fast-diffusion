@@ -37,4 +37,8 @@ pip install pybind11
 ### required parameters 
 Potential function (-p), number of samples (-ns), mesh grid (-nx), time step size (-dt), num of steps (-nt), GRF parameters (-alp, -tau).
 
-Use BFM-fast-diffusion.py.
+for example
+```
+python data_generation.py -p gaussian -ns 2 -nx 64 -nt 10 -dt 0.0005 -alp 4 -tau 10
+```
+
