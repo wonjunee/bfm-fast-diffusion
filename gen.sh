@@ -12,4 +12,7 @@ module load fftw/3.3.8
 
 conda activate tg3
 
-python data_generation.py -p gaussian -ns 2 -nx 64 -nt 10 -dt 0.0005 -alp 4 -tau 10
+python data_generation.py -p gaussian -ns 2 -nx 64 -nt 100 -dt 0.0005 -alp 4 -tau 10
+
+
+#python test_BFM_alg.py -p gaussian -ns 2 -nx 64 -nt 10 -dt 0.0005 -alp 4 -tau 10

@@ -7,15 +7,44 @@ from BFM_alg import BFM
 from Potential import Potential
 import bfmgf
 
-Ns = 2
-Nx = 64
+#####################
+import argparse
 
-Nt = 40
-dt = 0.01
+parser = argparse.ArgumentParser(description='data generation for 2D kinetic')
 
-alpha = 4.0
-tau = 10
-potential_name = 'gaussian'
+parser.add_argument('-p', '--potential', type=str, metavar='', help='name of potential')
+
+parser.add_argument('-ns', '--ns', type=int, metavar='', help='number of samples')
+parser.add_argument('-nx', '--nx', type=int, metavar='', help='num of grids')
+parser.add_argument('-nt', '--nt', type=int, metavar='', help='num of step')
+parser.add_argument('-dt', '--dt', type=float, metavar='', help='time step size')
+
+parser.add_argument('-alp', '--alp', type=float, metavar='', help='alpha in GRF')
+parser.add_argument('-tau', '--tau', type=int, metavar='', help='tau in GRF')
+
+args = parser.parse_args()
+
+Ns = args.ns
+Nx = args.nx
+
+Nt = args.nt
+dt = args.dt
+
+alpha = args.alp
+tau = args.tau
+potential_name = args.potential
+
+#############################################
+
+# Ns = 2
+# Nx = 64
+#
+# Nt = 40
+# dt = 0.01
+#
+# alpha = 4.0
+# tau = 10
+# potential_name = 'gaussian'
 
 # define grid
 lx = 1
@@ -114,7 +143,13 @@ n = Nx
 
 xx, yy = np.meshgrid(np.linspace(0.5/n,1-0.5/n,n),np.linspace(0.5/n,1-0.5/n,n))
 P = Potential(xx, yy)
-V = P.gaussian(0.5, 0.5, 0.1)
+
+if potential_name == 'double_wells':
+    V = P.double_well(0.25, 0.25, 0.75, 0.75, 100, 0.01)
+elif potential_name == 'gaussian':
+    V = P.gaussian(0.5, 0.5, 0.01)
+elif potential_name == 'trig':
+    V = P.trig(5, 5, 0.01)
 
 
 # for the BFM.

@@ -2,7 +2,6 @@ import numpy as np
 from GRF import *
 from utils import *
 from BFM_alg import BFM
-from scipy.interpolate import CubicSpline
 from Potential import Potential
 import argparse
 
@@ -59,6 +58,8 @@ if __name__ == "__main__":
         V = P.double_well(0.25, 0.25, 0.75, 0.75, 100, 0.01)
     elif potential_name == 'gaussian':
         V = P.gaussian(0.5, 0.5, 0.01)
+    elif potential_name == 'trig':
+        V = P.trig(5, 5, 0.01)
 
 
     ### run BFM ####
