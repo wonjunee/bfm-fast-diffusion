@@ -16,4 +16,4 @@ class Potential(object):
 
     def trig(self, a, b, coeff):
         V = 1 - np.sin(self.xx*a*np.pi)*np.sin(self.yy*b*np.pi)
-        return V*coeff
+        return V*coeff/2

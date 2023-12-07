@@ -36,3 +36,50 @@ def interp_2d(x, f, xnew, lx):
     for j in range(N1):
         fnew[:, j] = interp_1d(x, fmid[:, j], xnew, lx)
     return fnew
+
+def get_plot(xx, yy, mu, V, rho_traj, phi_traj, fig_name):
+    Nt = rho_traj.shape[0]
+    fig1, ax = plt.subplots(2, 2)
+    cp = ax[0, 0].contourf(xx, yy, rho_traj[0, ...], 10)
+    ax[0, 0].set_title(r'$\rho_0$')
+    plt.colorbar(cp)
+
+    cp = ax[1, 0].contourf(xx, yy, phi_traj[0, ...], 10)
+    ax[1, 0].set_title(r'$\phi_0$')
+    plt.colorbar(cp)
+
+    cp = ax[0, 1].contourf(xx, yy, rho_traj[-1, ...], 10)
+    ax[0, 1].set_title(r'$\rho$ end')
+    plt.colorbar(cp)
+
+    cp = ax[1, 1].contourf(xx, yy, phi_traj[-1, ...], 10)
+    ax[1, 1].set_title(r'$\phi$ end')
+    plt.colorbar(cp)
+    plt.tight_layout()
+    fig1.savefig(fig_name + '_end.png')
+
+    # print(mu.shape)
+    # zxc
+
+    fig, ax = plt.subplots(2, 11, figsize=(20, 4))
+    cp = ax[0, 0].contourf(xx, yy, mu, 10)
+    ax[0, 0].set_title(r'$\rho_0$')
+
+    cp = ax[1, 0].contourf(xx, yy, V, 10)
+    ax[1, 0].set_title(r'$V$')
+
+    for i in range(10):
+        cp = ax[0, i + 1].contourf(xx, yy, rho_traj[int(Nt / 10) * i, ...], 10)
+        ax[0, i + 1].set_title(r'$\rho$' + f"-{int(Nt / 10) * i}")
+
+        ax[1, i + 1].contourf(xx, yy, phi_traj[int(Nt / 10) * i, ...], 10)
+        ax[1, i + 1].set_title(r'$\phi$' + f"-{int(Nt / 10) * i}")
+
+    for axs in ax.flat:
+        axs.set_xticks([])
+        axs.set_yticks([])
+
+    plt.tight_layout()
+    plt.show()
+    plt.savefig(fig_name + '_all.png')
+    plt.close('all')

@@ -55,11 +55,11 @@ if __name__ == "__main__":
         rho0_mat[i, ...] = tmp_rho/tmp_rho.mean()
 
     if potential_name == 'double_wells':
-        V = P.double_well(0.25, 0.25, 0.75, 0.75, 100, 0.01)
+        V = P.double_well(0.25, 0.25, 0.75, 0.75, 100, 1)
     elif potential_name == 'gaussian':
-        V = P.gaussian(0.5, 0.5, 0.01)
+        V = P.gaussian(0.5, 0.5, 1)
     elif potential_name == 'trig':
-        V = P.trig(5, 5, 0.01)
+        V = P.trig(3, 3, 1)
 
 
     ### run BFM ####

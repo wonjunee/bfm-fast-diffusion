@@ -147,9 +147,9 @@ P = Potential(xx, yy)
 if potential_name == 'double_wells':
     V = P.double_well(0.25, 0.25, 0.75, 0.75, 100, 0.01)
 elif potential_name == 'gaussian':
-    V = P.gaussian(0.5, 0.5, 0.01)
+    V = P.gaussian(0.5, 0.5, 1)
 elif potential_name == 'trig':
-    V = P.trig(5, 5, 0.01)
+    V = P.trig(3, 3, 1)
 
 
 # for the BFM.
@@ -165,9 +165,12 @@ push   = np.zeros((n,n)).astype('float64')
 
 rho_traj, phi_traj = BFM(dt, Nt, Nx, mu, V)
 
+eq = np.exp(-V)
+eq = eq/eq.mean()
 
 
-fig1, ax = plt.subplots(2, 2)
+
+fig1, ax = plt.subplots(3, 2)
 cp = ax[0, 0].contourf(xx, yy, rho_traj[0, ...], 10)
 ax[0, 0].set_title(r'$\rho_0$')
 plt.colorbar(cp)
@@ -182,6 +185,13 @@ plt.colorbar(cp)
 
 cp = ax[1, 1].contourf(xx, yy, phi_traj[-1, ...], 10)
 ax[1, 1].set_title(r'$\phi$ end')
+plt.colorbar(cp)
+
+cp = ax[2, 0].contourf(xx, yy, eq, 10)
+ax[2, 0].set_title(r'$eq$')
+plt.colorbar(cp)
+cp = ax[2, 1].contourf(xx, yy, np.abs(eq - rho_traj[-1, ...]), 10)
+ax[2, 1].set_title(r'error')
 plt.colorbar(cp)
 plt.tight_layout()
 fig1.savefig(f'end.png')

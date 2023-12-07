@@ -83,7 +83,7 @@ def BFM(tau, Nt, n, rho0, V, maxiter=1000, tol=1e-3):
     # rho is IC
     # V is potential
     ###########
-    sigma = tau/10
+    sigma = tau/2
 
     mu = rho0.copy()
 
