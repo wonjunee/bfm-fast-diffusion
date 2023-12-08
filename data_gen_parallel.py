@@ -11,14 +11,11 @@ import argparse
 parser = argparse.ArgumentParser(description='data generation for 2D kinetic')
 
 parser.add_argument('-p', '--potential', type=str, metavar='', help='name of potential')
-
 parser.add_argument('-nst', '--nst', type=int, metavar='', help='number of samples')
 parser.add_argument('-nx', '--nx', type=int, metavar='', help='num of grids')
 parser.add_argument('-nt', '--nt', type=int, metavar='', help='num of step')
 parser.add_argument('-dt', '--dt', type=float, metavar='', help='time step size')
-
 parser.add_argument('-bs', '--bs', type=int, metavar='', help='batch size')
-
 parser.add_argument('-alp', '--alp', type=float, metavar='', help='alpha in GRF')
 parser.add_argument('-tau', '--tau', type=int, metavar='', help='tau in GRF')
 

@@ -13,6 +13,16 @@ import os
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser(description='Operator learning of WGF')
+
+parser.add_argument('-p', '--potential', type=str, metavar='', help='name of potential')
+parser.add_argument('-nst', '--nst', type=int, metavar='', help='number of samples')
+parser.add_argument('-nx', '--nx', type=int, metavar='', help='num of grids')
+parser.add_argument('-nt', '--nt', type=int, metavar='', help='num of step')
+parser.add_argument('-dt', '--dt', type=float, metavar='', help='time step size')
+parser.add_argument('-bs', '--bs', type=int, metavar='', help='batch size')
+parser.add_argument('-alp', '--alp', type=float, metavar='', help='alpha in GRF')
+parser.add_argument('-tau', '--tau', type=int, metavar='', help='tau in GRF')
+
 parser.add_argument('-n', '--net', type=str, metavar='', help='network architecture')
 parser.add_argument('-st', '--st', type=int, metavar='', help='number of steps')
 parser.add_argument('-flg', '--flg', type=int, metavar='', help='flag indicates rho or phi learning')
@@ -30,6 +40,15 @@ if __name__ == "__main__":
     args = None
     if args:
         # config from parser
+        Ns = args.nst
+        Nx = args.nx
+        bs = args.bs
+        Nt = args.nt
+        dt = args.dt
+        alpha = args.alp
+        tau = args.tau
+        potential_name = args.potential
+
         net = args.net
         st = args.st
         flag = args.flg
@@ -60,36 +79,20 @@ if __name__ == "__main__":
 
 
     # prepare data set
-    Nj = 100
-    rnd = None
+    lx = 1
 
-    Nx = 60
+    points_x = np.linspace(0.5 / Nx, lx - 0.5 / Nx, Nx)
+    x = points_x[:, None]
+    xx, yy = np.meshgrid(x, x)
 
-    sts = 0
-    ast = 10
-    dt = 0.01
-    cc = 1
-    nc = 0.005
-
-    points_x = np.linspace(0, 1 - 1/Nx, Nx)
-
-    xx, yy = np.meshgrid(points_x, points_x)
-
-    #filename = 'GF_rho2_t' + '_Nj_' + str(Nj) + '_sts_' + str(sts) + '_st_' + str(st)
-    if flag==1:
-        filename = 'GF_rho_t' + '_Nj_' + str(Nj) + '_sts_' + str(sts) + '_st_' + str(st) + '_cc_' + str(cc) + '_nc_' + num2str_deciaml(nc)
-    else:
-        filename = 'GF_all_t' + '_Nj_' + str(Nj) + '_sts_' + str(sts) + '_st_' + str(st) + '_cc_' + str(cc) + '_nc_' + num2str_deciaml(nc)
-    npy_name = filename + '.npy'
+    npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_' + num2str_deciaml(
+        Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_' + num2str_deciaml(
+        tau) + '_bs_' + num2str_deciaml(bs) + '_idx_' + num2str_deciaml(idx) + '.npy'
 
     with open(npy_name, 'rb') as ss:
-        Train_IP = np.load(ss)
-        Train_OP = np.load(ss)
-        Test_IP = np.load(ss)
-        Test_OP = np.load(ss)
-
-        Test_rho0 = np.load(ss)
-        Test_Traj = np.load(ss)
+        rho0_mat = np.load(ss)
+        rho_mat = np.load(ss)
+        phi_mat = np.load(ss)
 
     if rnd:
         Ns, Nt, Nk = 800, 50, 10

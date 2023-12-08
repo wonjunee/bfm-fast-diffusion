@@ -40,7 +40,6 @@ elif potential_name == 'trig':
 #npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_'+num2str_deciaml(Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_'+num2str_deciaml(tau) + '.npy'
 npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_'+num2str_deciaml(Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_'+num2str_deciaml(tau) +'_bs_' + num2str_deciaml(bs) + '_idx_' + num2str_deciaml(idx) + '.npy'
 
-
 with open(npy_name, 'rb') as ss:
     rho0_mat = np.load(ss)
     rho_mat = np.load(ss)
