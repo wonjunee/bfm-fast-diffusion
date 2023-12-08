@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 from utils import *
 from Potential import Potential
 
-Ns = 2
+Ns = 20
+bs = 2
+idx = 1
+
 Nx = 64
 
 Nt = 200
@@ -31,10 +34,13 @@ if potential_name == 'double_wells':
 elif potential_name == 'gaussian':
     V = P.gaussian(0.5, 0.5, 0.01)
 elif potential_name == 'trig':
-    V = P.trig(5, 5, 0.01)
+    V = P.trig(3, 3, 0.01)
 
 
-npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_'+num2str_deciaml(Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_'+num2str_deciaml(tau) + '.npy'
+#npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_'+num2str_deciaml(Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_'+num2str_deciaml(tau) + '.npy'
+npy_name = 'Kinetic_2D_' + potential_name + '_Ns_' + str(Ns) + '_Nx_' + str(Nx) + '_Nt_'+num2str_deciaml(Nt) + '_dt_' + num2str_deciaml(dt) + '_alp_' + num2str_deciaml(alpha) + '_tau_'+num2str_deciaml(tau) +'_bs_' + num2str_deciaml(bs) + '_idx_' + num2str_deciaml(idx) + '.npy'
+
+
 with open(npy_name, 'rb') as ss:
     rho0_mat = np.load(ss)
     rho_mat = np.load(ss)

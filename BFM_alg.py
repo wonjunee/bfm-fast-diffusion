@@ -76,7 +76,7 @@ def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, ta
 ##################################################################################
 
 ### main algorithm starts here ######################################
-def BFM(tau, Nt, n, rho0, V, maxiter=1000, tol=1e-3):
+def BFM(tau, Nt, n, rho0, V, dtype= 'float64', maxiter=1000, tol=2e-3):
     #########
     # outer loop: tau, Nt, time T = Nt*tau
     # inner loop: sigma: lr; maxiter and tol
@@ -87,17 +87,17 @@ def BFM(tau, Nt, n, rho0, V, maxiter=1000, tol=1e-3):
 
     mu = rho0.copy()
 
-    rho_traj = np.zeros((Nt, n, n)).astype('float64')
-    phi_traj = np.zeros((Nt, n, n)).astype('float64')
+    rho_traj = np.zeros((Nt, n, n)).astype(dtype)
+    phi_traj = np.zeros((Nt, n, n)).astype(dtype)
 
     method = bfmgf.BFM(n, n, tau)
     flt2d = bfmgf.FLT2D(n, n)
     kernel = initialize_kernel(n, n, 1.0 / n)
-    DUstar = np.ones((n, n)).astype('float64')
-    V = V.astype('float64')
-    phi = np.zeros((n, n)).astype('float64')
-    psi = np.zeros((n, n)).astype('float64')
-    push = np.zeros((n, n)).astype('float64')
+    DUstar = np.ones((n, n)).astype(dtype)
+    V = V.astype(dtype)
+    phi = np.zeros((n, n)).astype(dtype)
+    psi = np.zeros((n, n)).astype(dtype)
+    push = np.zeros((n, n)).astype(dtype)
 
     for t in range(Nt):  # total number of outer iterations rho^0, rho^1, ..., rho^{jj}
         error_for_prev = 1
