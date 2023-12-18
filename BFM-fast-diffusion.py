@@ -47,7 +47,7 @@ def solve_poisson(u, f, kernel,theta1,theta2):
 # %%
 
 
-def iterate_forward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2):
+def iterate_forward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2, sigma):
     flt2d.find_c_concave(psi, phi, tau)
     flt2d.find_c_concave(phi, psi, tau)
 
@@ -61,13 +61,13 @@ def iterate_forward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau
     f = - push + DUstar
     solve_poisson(u,f,kernel,theta1,theta2)
 
-    phi +=  u
+    phi += u * sigma
 
     return np.mean(np.abs(u * f))
     
     
 
-def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2):
+def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2, sigma):
     flt2d.find_c_concave(psi, phi, tau)
     
     # bfmgf.calculate_DUstar(DUstar, V, phi, n, n, tau)
@@ -79,7 +79,7 @@ def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, ta
     f = - push + mu
     solve_poisson(u,f,kernel,theta1,theta2)
 
-    psi += u
+    psi += u * sigma
 
     flt2d.find_c_concave(phi, psi, tau)
     return np.mean(np.abs(u * f))
@@ -93,7 +93,9 @@ def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, ta
 n = 256 # grid size
 xx, yy = np.meshgrid(np.linspace(0.5/n,1-0.5/n,n),np.linspace(0.5/n,1-0.5/n,n)) # mesh grids
 tau = 0.05 # outer time step
-sigma = 0.01 # inner time step (for the optimization, learning rate)
+sigma  = 0.1 # inner time step (for the optimization, learning rate)
+theta1 = 1.0
+theta2 = 1.0/(tau*np.max(mu))
 mu = np.zeros((n,n))
 mu[(np.abs(xx-0.3)<0.2) & (np.abs(yy-0.3)<0.2)] = 1
 mu /= mu.mean()
@@ -115,10 +117,8 @@ for jj in range(20): # total number of outer iterations rho^0, rho^1, ..., rho^{
     error_for_prev = 1
     error_bac_prev = 1
     for i in range(200): # you may need samller numbero fiteration than this. 
-        theta1 = sigma
-        theta2 = sigma/(tau*np.max(mu))
-        error_for = iterate_forward (flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2)
-        error_bac = iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2)
+        error_for = iterate_forward (flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2, sigma)
+        error_bac = iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, tau, theta1, theta2, sigma)
 
         error1 = np.abs((error_for-error_for_prev)/error_for_prev)
         error2 = np.abs((error_bac-error_bac_prev)/error_bac_prev)
