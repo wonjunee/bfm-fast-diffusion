@@ -92,7 +92,7 @@ def iterate_backward(flt2d, method, push, psi, phi, mu, DUstar, V, kernel, n, ta
 # %%
 n = 256 # grid size
 xx, yy = np.meshgrid(np.linspace(0.5/n,1-0.5/n,n),np.linspace(0.5/n,1-0.5/n,n)) # mesh grids
-tau = 0.05 # outer time step
+tau = 0.01 # outer time step
 sigma  = 0.1 # inner time step (for the optimization, learning rate)
 theta1 = 1.0
 theta2 = 0.01
