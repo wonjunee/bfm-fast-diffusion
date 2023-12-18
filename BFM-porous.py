@@ -112,12 +112,12 @@ print(np.mean(mu))
 # define the potential
 V      = ((xx-0.9)**2 + (yy-0.9)**2)/2.0
 
-# for the BFM.
+# initializations for the BFM.
 method = bfmgf.BFM(n,n,tau)
 flt2d  = bfmgf.FLT2D(n,n)
 kernel = initialize_kernel(n, n, 1.0/n)
-DUstar = np.ones((n,n)).astype('float64')
 V      = V.astype('float64')
+DUstar = np.ones((n,n)).astype('float64')
 phi    = np.zeros((n,n)).astype('float64')
 psi    = np.zeros((n,n)).astype('float64')
 push   = np.zeros((n,n)).astype('float64')
